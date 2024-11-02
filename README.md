@@ -6,5 +6,5 @@
 |-----------------------|---------------------------------|------------------|
 | Cristopher Bechtholdt | cristopherbechtholdt@gmail.com  | CrisIanBech      |
 | Nicolás Salvanescki   | salvanescki.unq@gmail.com       | salvanescki      |
-| Nicolás Salvatore     |                                 |                  |
+| Nicolás Salvatore     | nicolas.salvatore@alu.unq.edu.ar| Unknow-Error     |
 ------------------------------------------------------------------------------
