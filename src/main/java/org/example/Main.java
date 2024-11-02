@@ -11,11 +11,14 @@ public class Main {
          *
          * */
         ThreadPool pool = new ThreadPool(10, 8);
+        WorkerCounter workerCounter = new WorkerCounter();  // Crea el monitor WorkerCounter
+        
         for (int i = 1; i <= 100; i++) {
             pool.launch(new DummyTask("Task No." + i + "."));
         }
 
         pool.stop();
+        workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
         System.out.println("Todos los threads worker terminaron sus tareas.");
     }
 }
