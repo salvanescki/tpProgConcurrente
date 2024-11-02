@@ -5,4 +5,6 @@ public class PoisonPill implements Runnable {
     public void run() {
         throw new PoisonException("Deteniendo Worker");
     }
+
+    class PoisonException extends Runtime Exception{}
 }
