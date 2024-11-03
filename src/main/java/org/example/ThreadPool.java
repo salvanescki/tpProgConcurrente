@@ -28,13 +28,5 @@ public class ThreadPool {
         for (int i = 0; i < workers.length; i++) {
             launch(new PoisonPill());
         }
-        for (Worker worker : workers) {
-            // join() espera que el thread worker termine
-            try {
-                worker.join();
-            } catch (InterruptedException e) {
-                return;
-            }
-        }
     }
 }

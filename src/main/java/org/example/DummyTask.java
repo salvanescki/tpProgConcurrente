@@ -3,7 +3,7 @@ package org.example;
 /**
  * Clase de ejemplo para probar que funcionan el buffer y los workers
  */
-public class DummyTask implements Runnable {
+public class DummyTask extends Task {
 
     private final String msg;
 

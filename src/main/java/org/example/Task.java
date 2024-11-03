@@ -1,9 +1,5 @@
 package org.example;
 
-public class Task implements Runneable {
+public abstract class Task implements Runnable {
 
-    private class MNISTaks{
-      
-    }
-    
 }
