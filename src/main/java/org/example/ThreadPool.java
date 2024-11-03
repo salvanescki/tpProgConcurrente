@@ -2,15 +2,19 @@ package org.example;
 
 public class ThreadPool {
 
-    private final Buffer buffer;
+    private Buffer buffer;
     private final Worker[] workers;
+    private int numWorkers;
+    private final WorkerCounter workerCounter;
 
-    public ThreadPool(int bufferSize, int workersQuantity) {
-        buffer = new Buffer(bufferSize);
-        workers = new Worker[workersQuantity];
+    public ThreadPool(int bufferSize, int numWorkers, WorkerCounter workerCounter) {
+        this.buffer = new Buffer(bufferSize);
+        this.numWorkers = numWorkers;
+        this.workers = new Worker[numWorkers];
+        this.workerCounter = workerCounter;
 
-        for (int i = 0; i < workersQuantity; i++) {
-            workers[i] = new Worker(buffer);
+        for (int i = 0; i < numWorkers; i++) {
+            this.workers[i] = new Worker(buffer, workerCounter);
             workers[i].start();
         }
     }
