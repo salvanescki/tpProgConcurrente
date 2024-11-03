@@ -40,7 +40,7 @@ public class Buffer {
             try {
                 wait();
             } catch (InterruptedException e) {
-                return;
+                return null;
             }
         }
         Runnable result = tasks[end];

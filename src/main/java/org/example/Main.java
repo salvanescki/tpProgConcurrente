@@ -10,8 +10,14 @@ public class Main {
          *  - tamano_buffer : el tamaño del buffer.
          *
          * */
+
+
+        int kNeighbors = 0; //args[1];
+        int numWorkers = 8; //args[2];
+        int bufferSize = 10; //args[3];
+
         WorkerCounter workerCounter = new WorkerCounter();  // Crea el monitor WorkerCounter
-        ThreadPool pool = new ThreadPool(10, 8, workerCounter);
+        ThreadPool pool = new ThreadPool(bufferSize, numWorkers, workerCounter);
 
         for (int i = 1; i <= 100; i++) {
             pool.launch(new DummyTask("Task No." + i + "."));
