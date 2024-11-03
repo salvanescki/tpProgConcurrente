@@ -19,6 +19,8 @@ public class Main {
 
         pool.stop();
         workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
+
+        long endTime = System.currentTimeMillis();
         System.out.println("Todos los threads worker terminaron sus tareas.");
     }
 }
