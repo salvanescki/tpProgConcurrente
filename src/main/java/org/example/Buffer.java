@@ -26,7 +26,7 @@ public class Buffer {
         while (isFull()) {
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 return;
             }
         }
@@ -39,8 +39,8 @@ public class Buffer {
         while (isEmpty()) {
             try {
                 wait();
-            } catch (Exception e) {
-                return null;
+            } catch (InterruptedException e) {
+                return;
             }
         }
         Runnable result = tasks[end];
