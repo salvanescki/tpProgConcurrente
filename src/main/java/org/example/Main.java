@@ -23,7 +23,7 @@ public class Main {
 		ResultadoGlobal resultadoGlobal = new ResultadoGlobal(kNeighbors);
 		
 		// Cargar conjunto de entrenamiento
-        List<Image> datasetEntrenamiento = cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
+                List<Image> datasetEntrenamiento = cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
 		
 		//Cargar tareas según el modo
 		if(modo.equals("imagen")) {
