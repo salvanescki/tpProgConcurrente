@@ -19,4 +19,13 @@ public class ResultadoGlobal {
     public synchronized PriorityQueue<KNearestNeighbors.PuntoDistancia> obtenerResultados() {
         return new PriorityQueue<>(globalKVecinos); // Copia para evitar modificar el original
     }
+
+     // Mostrar los resultados
+    public void mostrarResultados() {
+        System.out.println("Vecinos más cercanos (k vecinos):");
+        int contador = 1;
+        for (KNearestNeighbors.PuntoDistancia punto : globalKVecinos) {
+            System.out.printf("Vecino #%d: Índice: %d, Distancia: %d%n", contador++, punto.indice, punto.distancia);
+        }
+    }
 }
