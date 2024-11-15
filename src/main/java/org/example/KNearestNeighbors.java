@@ -6,22 +6,25 @@ import java.util.PriorityQueue;
 public class KNearestNeighbors {
 
   public static class PuntoDistancia {
-        int indice;
+      int indice;
+      byte tag;
       public long distancia;
 
-      public PuntoDistancia(int indice, long distancia) {
+      public PuntoDistancia(int indice, long distancia, byte tag) {
             this.indice = indice;
             this.distancia = distancia;
+            this.tag = tag;
         }
     }
 
-  public static PriorityQueue<PuntoDistancia> obtenerKVecinosMasCercanos(byte[] imagenTarget, List<byte[]> dataset, int k) {
+  public static PriorityQueue<PuntoDistancia> obtenerKVecinosMasCercanos(Image imageTarget, List<byte[]> dataset, int k) {
+      byte[] colors = imageTarget.getColors();
       PriorityQueue<PuntoDistancia> pq = new PriorityQueue<PuntoDistancia>(Comparator.comparingLong(p -> p.distancia));
 
         for (int i = 0; i < dataset.size(); i++) {
             byte[] punto = dataset.get(i);
-            long distancia = calcularDistancia(imagenTarget, punto);
-            pq.add(new PuntoDistancia(i, distancia));
+            long distancia = calcularDistancia(colors, punto);
+            pq.add(new PuntoDistancia(i, distancia, imageTarget.getTag()));
         }
 
       PriorityQueue<PuntoDistancia> kVecinos = new PriorityQueue<PuntoDistancia>(Comparator.comparingLong(p -> p.distancia));

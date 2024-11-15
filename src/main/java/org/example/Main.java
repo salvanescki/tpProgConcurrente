@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class Main {
         long tiempoInicio = System.currentTimeMillis();
         WorkerCounter workerCounter = new WorkerCounter();
         ThreadPool pool = new ThreadPool(bufferSize, numWorkers, workerCounter);
-        ResultadoGlobal resultadoGlobal = new ResultadoGlobal(kNeighbors);
+
+        ArrayList<ResultadoGlobal> resultadosGlobales = new ArrayList<>();
 
         // Cargar conjunto de entrenamiento
         List<Image> datasetEntrenamiento = cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
@@ -32,9 +34,9 @@ public class Main {
         //Cargar tareas según el modo
         if (modo.equals("imagen")) {
             //Crear una tarea para una imagen
-            analizarImagen(pool, archivoPath, datasetEntrenamiento, kNeighbors);
+            analizarImagen(pool, archivoPath, datasetEntrenamiento, kNeighbors, resultadosGlobales);
         } else if (modo.equals("CSV")) {
-            analizarCSV(pool, archivoPath, datasetEntrenamiento, kNeighbors);
+            analizarCSV(pool, archivoPath, datasetEntrenamiento, kNeighbors, resultadosGlobales);
         }
 
         /*
@@ -46,28 +48,36 @@ public class Main {
         pool.stop();
         workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
 
+        for(ResultadoGlobal resultado: resultadosGlobales) {
+            resultado.mostrarResultados();
+        }
+
         long tiempoFinal = System.currentTimeMillis();
         System.out.println("El tiempo total de ejecución fue de : " + (tiempoFinal - tiempoInicio) + " milisegundos.");
         System.out.println("Todos los threads Workers han terminado sus tareas");
     }
 
-    private static void analizarImagen(ThreadPool threadPool, String filePath, List<Image> datasetEntrenamiento, int k) {
+    private static void analizarImagen(ThreadPool threadPool, String filePath, List<Image> datasetEntrenamiento, int k, List<ResultadoGlobal> resultadosGlobales) {
         try {
             // Ruta de la imagen proporcionada como entrada
             Image imagen = new Image(filePath);
-            threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
+            ResultadoGlobal rg = new ResultadoGlobal(k);
+            resultadosGlobales.add(rg);
+            threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, rg));
         } catch (IOException e) {
         	 e.printStackTrace();
         }
     }
 	
-	private static void analizarCSV(ThreadPool threadPool, String archivoPrueba, List<Image> datasetEntrenamiento, int k) {
+	private static void analizarCSV(ThreadPool threadPool, String archivoPrueba, List<Image> datasetEntrenamiento, int k, List<ResultadoGlobal> resultadosGlobales) {
         try {
             CSVReader csvReader = new CSVReader();
             List<Image> imagenesPrueba = csvReader.read(archivoPrueba, 0, Integer.MAX_VALUE);
 
             for (Image imagen : imagenesPrueba) {
-                threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
+                ResultadoGlobal rg = new ResultadoGlobalTest(k, imagen.getTag());
+                resultadosGlobales.add(rg);
+                threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, rg));
             }
         } catch (IOException e) {
             e.printStackTrace();
