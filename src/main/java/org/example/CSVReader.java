@@ -16,12 +16,16 @@ public class CSVReader {
             String line;
             for (int i = 0; i < offset; i++) {
                 line = br.readLine();
+                System.out.println(i + line);
             }
 
             List<Image> images = new ArrayList<Image>();
 
             for (int i = 0; i < linesToRead; i++) {
                 line = br.readLine();
+                if (line == null) {
+                    break;
+                }
                 images.add(parseLine(line));
             }
 
@@ -35,8 +39,8 @@ public class CSVReader {
 
         byte tag = getValue(vals_str, 0);
 
-        for (int i = 1; i < vals_str.length; i++) {
-            data[i] = getValue(vals_str, i);
+        for (int i = 0; i < vals_str.length - 1; i++) {
+            data[i] = getValue(vals_str, i + 1);
         }
 
         return new Image(tag, data);
