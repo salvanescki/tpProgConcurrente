@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvReader {
+public class CSVReader {
 
     public List<Image> read(String fileName, int offset, int linesToRead) throws IOException {
 

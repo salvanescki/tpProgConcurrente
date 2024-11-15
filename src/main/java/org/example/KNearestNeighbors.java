@@ -7,7 +7,7 @@ public class KNearestNeighbors {
 
   public static class PuntoDistancia {
         int indice;
-      long distancia;
+      public long distancia;
 
       public PuntoDistancia(int indice, long distancia) {
             this.indice = indice;

@@ -1,5 +1,9 @@
 package org.example;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         /*
@@ -38,8 +42,8 @@ public class Main {
 		pool.iniciar(new DummyTask("Task No." + i + "."));
 	}
 	*/
-		
-	pool.detener();
+
+        pool.stop();
 	workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
 		
 	long tiempoFinal = System.currentTimeMillis();
@@ -51,7 +55,7 @@ public class Main {
         try {
             // Ruta de la imagen proporcionada como entrada
             Image imagen = new Image(filePath);
-            threadPool.iniciar(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
+            threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
         } catch (IOException e) {
         	 e.printStackTrace();
         }
@@ -63,7 +67,7 @@ public class Main {
             List<Image> imagenesPrueba = csvReader.read(archivoPrueba, 0, Integer.MAX_VALUE);
 
             for (Image imagen : imagenesPrueba) {
-                threadPool.iniciar(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
+                threadPool.launch(new MNISTask(imagen, datasetEntrenamiento, k, new ResultadoGlobal(k)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,5 +86,4 @@ public class Main {
 
 }
 
-}
 
