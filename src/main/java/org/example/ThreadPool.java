@@ -19,6 +19,10 @@ public class ThreadPool {
         }
     }
 
+    public int getNumWorkers() {
+        return numWorkers;
+    }
+
     public void launch(Runnable task) {
         // Acá iría un serialize() si hubiera que ponerlo
         buffer.write(task);
