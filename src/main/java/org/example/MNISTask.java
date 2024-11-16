@@ -19,13 +19,8 @@ public class MNISTask extends Task {
 	
 	@Override
 	public void run() {
-		List<byte[]> dataSetBytes = new ArrayList<>();
-		for (Image image : dataSet) {
-		    dataSetBytes.add(image.getColors());
-		}
-
 		PriorityQueue<KNearestNeighbors.PuntoDistancia> kVecinos =
-				KNearestNeighbors.obtenerKVecinosMasCercanos(imagenTarget, dataSetBytes, k);
+				KNearestNeighbors.obtenerKVecinosMasCercanos(imagenTarget, dataSet, k);
 		
 		// Registrar los resultados en la estructura global
         synchronized (resultadoGlobal) {

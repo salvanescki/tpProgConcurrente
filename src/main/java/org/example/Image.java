@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Image {
 
-    private byte tag = 127;
+    private byte tag = Byte.MAX_VALUE;
     private final byte[] data;
 
     public Image(byte tag, byte[] values) {
@@ -34,7 +34,7 @@ public class Image {
     }
 
     public void verifyTag() {
-        if (tag == 127) throw new RuntimeException("El tag de la imagen, es inválido");
+        if (tag == Byte.MAX_VALUE) throw new RuntimeException("El tag de la imagen, es inválido");
     }
 
     public void saveVectorToImage() {

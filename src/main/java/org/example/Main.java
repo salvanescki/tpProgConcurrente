@@ -49,7 +49,9 @@ public class Main {
             for(ResultadoGlobal resultado: resultadosGlobales) {
                 aciertos += resultado.acierto();
             }
-            double promedio = (double) (aciertos / resultadosGlobales.size()) * 100;
+            System.out.println("Aciertos: " + aciertos);
+            System.out.println("Cant total: " + resultadosGlobales.size());
+            double promedio = ((double) aciertos / resultadosGlobales.size()) * 100;
             System.out.println("Porcentaje de aciertos: " + promedio + "%");
         } else {
             System.out.println("El resultado final es: " + resultadosGlobales.getFirst().tagGanador());
