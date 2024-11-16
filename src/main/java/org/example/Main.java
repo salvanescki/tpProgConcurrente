@@ -81,20 +81,18 @@ public class Main {
 
             for (Image imagen : imagenesPrueba) {
                 ResultadoGlobal rg = new ResultadoGlobalTest(k, imagen.getTag());
+                resultadosGlobales.add(rg);
                 for(int i = 0; i < threadPool.getNumWorkers() - 1; i++) {
                     // Chequear caso borde
-                    resultadosGlobales.add(rg);
                     int initialIndex = (int) (i * lineasPorRango);
                     int finalIndex = (int) (initialIndex + lineasPorRango);
                     List<Image> bloque = datasetEntrenamiento.subList(initialIndex, finalIndex);
                     threadPool.launch(new MNISTask(imagen, bloque, k, rg));
                 }
-                if(threadPool.getNumWorkers() > 1) {
-                    int index = threadPool.getNumWorkers() - 1;
-                    int finalIndex = (int) Math.ceil(lineasPorRango);
-                    List<Image> bloque = datasetEntrenamiento.subList(index, finalIndex);
-                    threadPool.launch(new MNISTask(imagen, bloque, k, rg));
-                }
+                int index = threadPool.getNumWorkers() - 1;
+                int finalIndex = (int) Math.ceil(lineasPorRango);
+                List<Image> bloque = datasetEntrenamiento.subList(index, finalIndex);
+                threadPool.launch(new MNISTask(imagen, bloque, k, rg));
             }
 
         } catch (IOException e) {
