@@ -1,5 +1,7 @@
 package org.example;
 
+import jdk.jshell.spi.ExecutionControl;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -20,19 +22,14 @@ public class ResultadoGlobal {
         return new PriorityQueue<>(globalKVecinos); // Copia para evitar modificar el original
     }
 
-     // Mostrar los resultados
-    public void mostrarResultados() {
-        System.out.println("Vecinos más cercanos (k vecinos):");
-        int contador = 1;
-        for (KNearestNeighbors.PuntoDistancia punto : globalKVecinos) {
-            System.out.printf("Vecino #%d: Indice: %d, Distancia: %d%n", contador++, punto.indice, punto.distancia);
-        }
-        mostrarResultadoFinal();
-    }
-
-    protected void mostrarResultadoFinal() {
+    protected byte tagGanador() {
         PriorityQueue<KNearestNeighbors.PuntoDistancia> resultados = obtenerResultados();
         KNearestNeighbors.PuntoDistancia puntoGanador = resultados.poll();
-        System.out.println("Resultado tag: " + puntoGanador.tag);
+        return puntoGanador.tag;
     }
+
+    public int acierto() throws ExecutionControl.NotImplementedException {
+        throw new ExecutionControl.NotImplementedException("Not implemented");
+    }
+
 }

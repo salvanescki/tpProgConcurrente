@@ -1,13 +1,14 @@
 package org.example;
 
+import jdk.jshell.spi.ExecutionControl;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionControl.NotImplementedException {
         /*
          * El args[] es para los parámetros siguientes:
          * -modo : imagen simple con los pixeles solicitados o el archivo de test (.csv)
@@ -40,18 +41,20 @@ public class Main {
             analizarCSV(pool, archivoPath, datasetEntrenamiento, kNeighbors, resultadosGlobales);
         }
 
-        /*
-        for(int i = 1; i <= 100; i++) {
-            pool.iniciar(new DummyTask("Task No." + i + "."));
-        }
-        */
-
         pool.stop();
         workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
 
-        for(ResultadoGlobal resultado: resultadosGlobales) {
-            resultado.mostrarResultados();
+        if (modo.equals("CSV")) {
+            int aciertos = 0;
+            for(ResultadoGlobal resultado: resultadosGlobales) {
+                aciertos += resultado.acierto();
+            }
+            double promedio = (double) (aciertos / resultadosGlobales.size()) * 100;
+            System.out.println("Porcentaje de aciertos: " + promedio + "%");
+        } else {
+            System.out.println("El resultado final es: " + resultadosGlobales.getFirst().tagGanador());
         }
+
 
         long tiempoFinal = System.currentTimeMillis();
         System.out.println("El tiempo total de ejecución fue de : " + (tiempoFinal - tiempoInicio) + " milisegundos.");
@@ -77,7 +80,6 @@ public class Main {
             List<Image> imagenesPrueba = csvReader.read(archivoPrueba, 0, maxLines);
 
             float lineasPorRango = (float) maxLines / threadPool.getNumWorkers();
-            System.out.println("Cantidad lineas por rangoo: " + lineasPorRango);
 
             for (Image imagen : imagenesPrueba) {
                 ResultadoGlobal rg = new ResultadoGlobalTest(k, imagen.getTag());
@@ -86,18 +88,20 @@ public class Main {
                     // Chequear caso borde
                     int initialIndex = (int) (i * lineasPorRango);
                     int finalIndex = (int) (initialIndex + lineasPorRango);
-                    List<Image> bloque = datasetEntrenamiento.subList(initialIndex, finalIndex);
-                    threadPool.launch(new MNISTask(imagen, bloque, k, rg));
+                    dispatchWorker(threadPool, initialIndex, finalIndex, datasetEntrenamiento, imagen, k, rg);
                 }
                 int index = threadPool.getNumWorkers() - 1;
-                int finalIndex = (int) Math.ceil(lineasPorRango);
-                List<Image> bloque = datasetEntrenamiento.subList(index, finalIndex);
-                threadPool.launch(new MNISTask(imagen, bloque, k, rg));
+                int finalIndex = index + (int) Math.ceil(lineasPorRango);
+                dispatchWorker(threadPool, index, finalIndex, datasetEntrenamiento, imagen, k, rg);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void dispatchWorker(ThreadPool threadPool, int index, int finalIndex, List<Image> dataset, Image image, int k, ResultadoGlobal rg) {
+        List<Image> bloque = dataset.subList(index, finalIndex);
+        threadPool.launch(new MNISTask(image, bloque, k, rg));
     }
 
     private static List<Image> cargarDataset(String archivo, int offset, int cantidad) {

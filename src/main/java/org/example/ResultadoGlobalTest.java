@@ -9,8 +9,11 @@ public class ResultadoGlobalTest extends ResultadoGlobal {
     }
 
     @Override
-    protected void mostrarResultadoFinal() {
-        super.mostrarResultadoFinal();
-        System.out.println("Resultado esperado: " + tag);
+    public int acierto() {
+        if (tagGanador() == tag) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
