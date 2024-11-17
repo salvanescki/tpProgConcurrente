@@ -8,21 +8,29 @@ import java.util.Collections;
 import java.util.List;
 
 public class Main {
+
+    /**
+     * Se toman los argumentos en el siguiente orden:
+     * <ul>
+     *     <li>args[0] : Los k vecinos más cercanos deseados</li>
+     *     <li>args[1] : La cantidad de threads Workers a utilizar en el procesamiento</li>
+     *     <li>args[2] : El tamaño del buffer de tareas</li>
+     *     <li>args[3] : El path (ruta) del archivo de test "mnist_test.csv" o de la imagen .png (define el modo del programa)</li>
+     *     <li>args[4] : El path (ruta) de la base de datos mnist_train.csv</li>
+     * </ul>
+     *
+     * @param args
+     * @throws ExecutionControl.NotImplementedException
+     */
     public static void main(String[] args) throws ExecutionControl.NotImplementedException {
-        /*
-         * El args[] es para los parámetros siguientes:
-         * -modo : imagen simple con los pixeles solicitados o el archivo de test (.csv)
-         * -k : cantidad de k vecinos más cercanos o k imágenes más parecidas, deseados.
-         * -cant_threads : cantidad de Threads workers que va a crear el ThreadPool.
-         * -tamano_buffer : El tamaño del buffer.
-         */
 
         int kNeighbors = Integer.parseInt(args[0]); //args[1];
         int numWorkers = Integer.parseInt(args[1]); //args[2];
         int bufferSize = Integer.parseInt(args[2]); //args[3];
-        String modo = args[3]; //"imagen" o "CSV"
-        String archivoPath = args[4]; //"mnist_test.csv" o "prueba.png"
-        String dataSetEntrenamientoPath = args[5]; //"mnist_train.csv"
+        String archivoPath = args[3]; //"mnist_test.csv" o "prueba.png"
+        String dataSetEntrenamientoPath = args[4]; //"mnist_train.csv"
+
+        String modo = args[3].split("\\.")[1]; // "png" o "csv"
 
         long tiempoInicio = System.currentTimeMillis();
         WorkerCounter workerCounter = new WorkerCounter();
@@ -34,17 +42,17 @@ public class Main {
         List<Image> datasetEntrenamiento = cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
 
         //Cargar tareas según el modo
-        if (modo.equals("imagen")) {
+        if (modo.equals("png")) {
             //Crear una tarea para una imagen
             analizarImagen(pool, archivoPath, datasetEntrenamiento, kNeighbors, resultadosGlobales);
-        } else if (modo.equals("CSV")) {
+        } else if (modo.equals("csv")) {
             analizarCSV(pool, archivoPath, datasetEntrenamiento, kNeighbors, resultadosGlobales);
         }
 
         pool.stop();
         workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
 
-        if (modo.equals("CSV")) {
+        if (modo.equals("csv")) {
             int aciertos = 0;
             for(ResultadoGlobal resultado: resultadosGlobales) {
                 aciertos += resultado.acierto();
@@ -57,10 +65,8 @@ public class Main {
             System.out.println("El resultado final es: " + resultadosGlobales.getFirst().tagGanador());
         }
 
-
         long tiempoFinal = System.currentTimeMillis();
         System.out.println("El tiempo total de ejecución fue de : " + (tiempoFinal - tiempoInicio) + " milisegundos.");
-        System.out.println("Todos los threads Workers han terminado sus tareas");
     }
 
     private static void analizarImagen(ThreadPool threadPool, String filePath, List<Image> datasetEntrenamiento, int k, List<ResultadoGlobal> resultadosGlobales) {

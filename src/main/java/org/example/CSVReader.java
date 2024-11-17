@@ -19,7 +19,7 @@ public class CSVReader {
                 System.out.println(i + line);
             }
 
-            List<Image> images = new ArrayList<Image>();
+            List<Image> images = new ArrayList<>();
 
             for (int i = 0; i < linesToRead; i++) {
                 line = br.readLine();

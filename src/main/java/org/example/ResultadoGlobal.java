@@ -35,7 +35,7 @@ public class ResultadoGlobal {
 
         for (int i = 0; i < k && !pq.isEmpty(); i++) {
             KNearestNeighbors.PuntoDistancia elemento = pq.poll();
-            int tag = (int) elemento.tag;
+            int tag = Byte.toUnsignedInt(elemento.tag);
             frecuencias.put(tag, frecuencias.getOrDefault(tag, 0) + 1);
         }
 
