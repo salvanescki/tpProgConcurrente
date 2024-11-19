@@ -18,7 +18,9 @@ public class ProgramaConTests extends Programa {
         cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
         try {
             Scanner scanner = new Scanner(System.in);
+            System.out.print("Ingresar la cantidad de líneas a evaluar: ");
             int lineasALeer = Integer.parseInt(scanner.nextLine());
+            System.out.println("Analizando " + lineasALeer + " líneas...");
             scanner.close();
             CSVReader csvReader = new CSVReader();
             List<Image> imagenesPrueba = csvReader.read(filePath, 0, lineasALeer);
