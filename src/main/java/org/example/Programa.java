@@ -12,6 +12,7 @@ public abstract class Programa {
     protected final int k;
     protected final String dataSetEntrenamientoPath;
     protected final List<ResultadoGlobal> resultadosGlobales;
+    protected static int maxLines = 60000;
 
     public Programa(ThreadPool threadPool, String filePath, int k, String dataSetEntrenamientoPath) {
         this.threadPool = threadPool;
@@ -27,8 +28,10 @@ public abstract class Programa {
 
     abstract void printResultado();
 
-    protected void dispatchImage(Image imagen, float lineasPorRango) {
-        ResultadoGlobal rg = new ResultadoGlobalTest(k, imagen.getTag());
+    protected void dispatchImage(Image imagen) {
+        float lineasPorRango = lineasPorRango();
+
+        ResultadoGlobal rg = resultadoGlobal(imagen);
         resultadosGlobales.add(rg);
         for (int i = 0; i < threadPool.getNumWorkers() - 1; i++) {
             // Chequear caso borde
@@ -41,6 +44,12 @@ public abstract class Programa {
         int finalIndex = offset + (int) Math.ceil(lineasPorRango);
         dispatchWorker(threadPool, offset, finalIndex, dataset, imagen, k, rg);
     }
+
+    private float lineasPorRango() {
+        return (float) maxLines / threadPool.getNumWorkers();
+    }
+
+    protected abstract ResultadoGlobal resultadoGlobal(Image imagen);
 
     protected void dispatchWorker(ThreadPool threadPool, int index, int finalIndex, List<Image> dataset, Image image, int k, ResultadoGlobal rg) {
         List<Image> bloque = dataset.subList(index, finalIndex);

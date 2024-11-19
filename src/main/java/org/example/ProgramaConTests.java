@@ -17,13 +17,10 @@ public class ProgramaConTests extends Programa {
         cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
         try {
             CSVReader csvReader = new CSVReader();
-            final int maxLines = 60000;
             List<Image> imagenesPrueba = csvReader.read(filePath, 0, maxLines);
 
-            float lineasPorRango = (float) maxLines / threadPool.getNumWorkers();
-
             for (Image imagen : imagenesPrueba) {
-                dispatchImage(imagen, lineasPorRango);
+                dispatchImage(imagen);
             }
 
         } catch (IOException e) {
@@ -46,5 +43,10 @@ public class ProgramaConTests extends Programa {
         System.out.println("Cant total: " + resultadosGlobales.size());
         double promedio = ((double) aciertos / resultadosGlobales.size()) * 100;
         System.out.println("Porcentaje de aciertos: " + promedio + "%");
+    }
+
+    @Override
+    protected ResultadoGlobal resultadoGlobal(Image imagen) {
+        return new ResultadoGlobalTest(k, imagen.getTag());
     }
 }

@@ -16,7 +16,6 @@ public class CSVReader {
             String line;
             for (int i = 0; i < offset; i++) {
                 line = br.readLine();
-                System.out.println(i + line);
             }
 
             List<Image> images = new ArrayList<>();

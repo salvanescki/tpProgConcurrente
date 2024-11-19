@@ -1,8 +1,6 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProgramaConImagenEntrada extends Programa {
 
@@ -16,9 +14,7 @@ public class ProgramaConImagenEntrada extends Programa {
         try {
             // Ruta de la imagen proporcionada como entrada
             Image imagen = new Image(filePath);
-            ResultadoGlobal rg = new ResultadoGlobal(k);
-            resultadosGlobales.add(rg);
-            threadPool.launch(new MNISTask(imagen, dataset, k, rg));
+            dispatchImage(imagen);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,5 +23,10 @@ public class ProgramaConImagenEntrada extends Programa {
     @Override
     void printResultado() {
         System.out.println("El resultado final es: " + resultadosGlobales.getFirst().tagGanador());
+    }
+
+    @Override
+    protected ResultadoGlobal resultadoGlobal(Image imagen) {
+        return new ResultadoGlobal(k);
     }
 }
