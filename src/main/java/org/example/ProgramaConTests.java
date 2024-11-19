@@ -41,8 +41,9 @@ public class ProgramaConTests extends Programa {
                     dispatchWorker(threadPool, initialIndex, finalIndex, dataset, imagen, k, rg);
                 }
                 int index = threadPool.getNumWorkers() - 1;
-                int finalIndex = index + (int) Math.ceil(lineasPorRango);
-                dispatchWorker(threadPool, index, finalIndex, dataset, imagen, k, rg);
+                int offset = (int) (index * lineasPorRango);
+                int finalIndex = offset + (int) Math.ceil(lineasPorRango) + 1;
+                dispatchWorker(threadPool, offset, finalIndex, dataset, imagen, k, rg);
             }
         } catch (IOException e) {
             e.printStackTrace();

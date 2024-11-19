@@ -21,11 +21,8 @@ public class MNISTask extends Task {
 	public void run() {
 		PriorityQueue<KNearestNeighbors.PuntoDistancia> kVecinos =
 				KNearestNeighbors.obtenerKVecinosMasCercanos(imagenTarget, dataSet, k);
-		
 		// Registrar los resultados en la estructura global
-        synchronized (resultadoGlobal) {
-            resultadoGlobal.agregarVecinos(kVecinos);
-        }
+		resultadoGlobal.agregarVecinos(kVecinos);
 	}
 
 }
