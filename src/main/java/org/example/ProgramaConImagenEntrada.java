@@ -23,6 +23,7 @@ public class ProgramaConImagenEntrada extends Programa {
     @Override
     void printResultado() {
         System.out.println("El resultado final es: " + resultadosGlobales.getFirst().tagGanador());
+        printTiempo();
     }
 
     @Override

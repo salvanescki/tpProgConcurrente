@@ -28,6 +28,11 @@ public abstract class Programa {
 
     abstract void printResultado();
 
+    protected void printTiempo() {
+        long tiempoFinal = System.currentTimeMillis();
+        System.out.println("El tiempo total de ejecución fue de : " + (tiempoFinal - Main.tiempoInicio) + " milisegundos.");
+    }
+
     protected void dispatchImage(Image imagen) {
         float lineasPorRango = lineasPorRango();
 
@@ -57,6 +62,7 @@ public abstract class Programa {
     }
 
     protected void cargarDataset(String archivo, int offset, int cantidad) {
+        Main.tiempoInicio = System.currentTimeMillis();
         CSVReader csvReader = new CSVReader();
         try {
             dataset = csvReader.read(archivo, offset, cantidad);

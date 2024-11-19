@@ -15,13 +15,13 @@ public class ProgramaConTests extends Programa {
 
     @Override
     void init() {
-        cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Ingresar la cantidad de líneas a evaluar: ");
             int lineasALeer = Integer.parseInt(scanner.nextLine());
             System.out.println("Analizando " + lineasALeer + " líneas...");
             scanner.close();
+            cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
             CSVReader csvReader = new CSVReader();
             List<Image> imagenesPrueba = csvReader.read(filePath, 0, lineasALeer);
 
@@ -49,6 +49,7 @@ public class ProgramaConTests extends Programa {
         System.out.println("Cant total: " + resultadosGlobales.size());
         double promedio = ((double) aciertos / resultadosGlobales.size()) * 100;
         System.out.println("Porcentaje de aciertos: " + promedio + "%");
+        printTiempo();
     }
 
     @Override

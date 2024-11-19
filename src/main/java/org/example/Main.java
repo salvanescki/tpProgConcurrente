@@ -29,11 +29,10 @@ public class Main {
     static String archivoPath;
     static String dataSetEntrenamientoPath;
     static String modo;
+    static long tiempoInicio;
 
     public static void main(String[] args) throws ExecutionControl.NotImplementedException {
         initArgs(args);
-
-        long tiempoInicio = System.currentTimeMillis();
 
         WorkerCounter workerCounter = new WorkerCounter();
         ThreadPool pool = new ThreadPool(bufferSize, numWorkers, workerCounter);
@@ -46,9 +45,6 @@ public class Main {
         workerCounter.trabajoTerminado(); //Espera a que no hayan trabajadores activos.
 
         program.printResultado();
-
-        long tiempoFinal = System.currentTimeMillis();
-        System.out.println("El tiempo total de ejecución fue de : " + (tiempoFinal - tiempoInicio) + " milisegundos.");
     }
 
     private static void initArgs(String[] args) {
