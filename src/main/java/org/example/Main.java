@@ -60,7 +60,6 @@ public class Main {
         modo = args[3].split("\\.")[1]; // "png" o "csv"
     }
 
-
 }
 
 

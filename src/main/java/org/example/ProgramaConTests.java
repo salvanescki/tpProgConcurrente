@@ -5,6 +5,7 @@ import jdk.jshell.spi.ExecutionControl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ProgramaConTests extends Programa {
 
@@ -16,8 +17,11 @@ public class ProgramaConTests extends Programa {
     void init() {
         cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
         try {
+            Scanner scanner = new Scanner(System.in);
+            int lineasALeer = Integer.parseInt(scanner.nextLine());
+            scanner.close();
             CSVReader csvReader = new CSVReader();
-            List<Image> imagenesPrueba = csvReader.read(filePath, 0, maxLines);
+            List<Image> imagenesPrueba = csvReader.read(filePath, 0, lineasALeer);
 
             for (Image imagen : imagenesPrueba) {
                 dispatchImage(imagen);
