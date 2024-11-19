@@ -8,47 +8,29 @@ import java.util.List;
 
 public class ProgramaConTests extends Programa {
 
-    private final ThreadPool threadPool;
-    private final String archivoPrueba;
-    private final int k;
-    private final String dataSetEntrenamientoPath;
-    private final List<ResultadoGlobal> resultadosGlobales;
-
-    public ProgramaConTests(ThreadPool threadPool, String archivoPrueba, int k, String dataSetEntrenamientoPath) {
-        this.threadPool = threadPool;
-        this.archivoPrueba = archivoPrueba;
-        this.k = k;
-        this.dataSetEntrenamientoPath = dataSetEntrenamientoPath;
-        this.resultadosGlobales = new ArrayList<>();
+    public ProgramaConTests(ThreadPool threadPool, String filePath, int k, String dataSetEntrenamientoPath) {
+        super(threadPool, filePath, k, dataSetEntrenamientoPath);
     }
+
     @Override
     void init() {
         cargarDataset(dataSetEntrenamientoPath, 0, Integer.MAX_VALUE);
         try {
             CSVReader csvReader = new CSVReader();
-            final int maxLines = 10000;
-            List<Image> imagenesPrueba = csvReader.read(archivoPrueba, 0, maxLines);
+            final int maxLines = 60000;
+            List<Image> imagenesPrueba = csvReader.read(filePath, 0, maxLines);
 
             float lineasPorRango = (float) maxLines / threadPool.getNumWorkers();
 
             for (Image imagen : imagenesPrueba) {
-                ResultadoGlobal rg = new ResultadoGlobalTest(k, imagen.getTag());
-                resultadosGlobales.add(rg);
-                for (int i = 0; i < threadPool.getNumWorkers() - 1; i++) {
-                    // Chequear caso borde
-                    int initialIndex = (int) (i * lineasPorRango);
-                    int finalIndex = (int) (initialIndex + lineasPorRango);
-                    dispatchWorker(threadPool, initialIndex, finalIndex, dataset, imagen, k, rg);
-                }
-                int index = threadPool.getNumWorkers() - 1;
-                int offset = (int) (index * lineasPorRango);
-                int finalIndex = offset + (int) Math.ceil(lineasPorRango) + 1;
-                dispatchWorker(threadPool, offset, finalIndex, dataset, imagen, k, rg);
+                dispatchImage(imagen, lineasPorRango);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     void printResultado() {

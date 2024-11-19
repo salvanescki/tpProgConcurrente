@@ -6,18 +6,8 @@ import java.util.List;
 
 public class ProgramaConImagenEntrada extends Programa {
 
-    private final ThreadPool threadPool;
-    private final String filePath;
-    private final int k;
-    private final String dataSetEntrenamientoPath;
-    private final List<ResultadoGlobal> resultadosGlobales;
-
     public ProgramaConImagenEntrada(ThreadPool threadPool, String filePath, int k, String dataSetEntrenamientoPath) {
-        this.threadPool = threadPool;
-        this.filePath = filePath;
-        this.k = k;
-        this.dataSetEntrenamientoPath = dataSetEntrenamientoPath;
-        this.resultadosGlobales = new ArrayList<>();
+        super(threadPool, filePath, k, dataSetEntrenamientoPath);
     }
 
     @Override

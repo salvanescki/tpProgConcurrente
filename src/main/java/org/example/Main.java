@@ -55,9 +55,9 @@ public class Main {
         kNeighbors = Integer.parseInt(args[0]); //args[1];
         numWorkers = Integer.parseInt(args[1]); //args[2];
         bufferSize = Integer.parseInt(args[2]); //args[3];
-        modo = args[3]; // "png" o "csv"
-        archivoPath = args[4]; //"mnist_test.csv" o "prueba.png"
-        dataSetEntrenamientoPath = args[5]; //"mnist_train.csv"
+        archivoPath = args[3]; //"mnist_test.csv" o "prueba.png"
+        dataSetEntrenamientoPath = args[4]; //"mnist_train.csv"
+        modo = args[3].split("\\.")[1]; // "png" o "csv"
     }
 
 
