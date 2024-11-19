@@ -9,7 +9,7 @@
 | Nicolás Salvatore     | nicolas.salvatore@alu.unq.edu.ar| Unknow-Error     |
 ------------------------------------------------------------------------------
 
-Código listo para la entrega, el informe aún está en proceso
+Código listo para la entrega, el informe se encuentra en el directorio root de la rama main
 
 ## Ejecución
 
